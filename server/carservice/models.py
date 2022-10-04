@@ -48,16 +48,18 @@ class Part(db.Model):
 #         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-# class clients(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(64))
-#     car_brand = db.Column(db.String(64))
-#     car_model = db.Column(db.String(64))
-#     contact = db.Column(db.String(64))
-#     visit = db.relationship("visits")
+class Client(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    car_brand = db.Column(db.String(64))
+    car_model = db.Column(db.String(64))
+    contact = db.Column(db.String(64))
 
-#     def as_dict(self):
-#         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+    def __init__(self, name, car_brand, car_model, contact):
+            self.name = name
+            self.car_brand = car_brand
+            self.car_model = car_model
+            self.contact = contact
 
 
 # class visits(db.Model):
@@ -74,16 +76,6 @@ class Part(db.Model):
 #         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-# class users(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(128), unique=True)
-#     login = db.Column(db.String(128))
-#     password = db.Column(db.String(128))
-
-#     def as_dict(self):
-#         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
-
 class PartSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Part
@@ -91,3 +83,12 @@ class PartSchema(ma.SQLAlchemyAutoSchema):
     @post_load
     def make_part(self, data, **kwargs):
         return Part(**data)
+
+
+class ClientSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Client
+
+    @post_load
+    def make_client(self, data, **kwargs):
+        return Client(**data)

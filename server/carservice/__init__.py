@@ -19,15 +19,15 @@ def create_app(config_class=Config):
     with app.app_context():
         from carservice.views.parts import parts_bp
         # from carservice.views.services import services_bp
-        # from carservice.views.clients import clients_bp
+        from carservice.views.clients import clients_bp
         # from carservice.views.visits import visits_bp
 
         app.register_blueprint(parts_bp)
         # app.register_blueprint(services_bp)
-        # app.register_blueprint(clients_bp)
+        app.register_blueprint(clients_bp)
         # app.register_blueprint(visits_bp)
 
-        from .models import Part
+        from .models import Part, Client
 
         db.create_all()
         db.session.commit()

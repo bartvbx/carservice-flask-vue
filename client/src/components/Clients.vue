@@ -170,7 +170,7 @@ export default {
       axios
         .get(path)
         .then((res) => {
-          this.clients = res.data.clients;
+          this.clients = res.data;
         })
         .catch((error) => {
           console.error(error);
