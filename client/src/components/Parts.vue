@@ -144,7 +144,7 @@ export default {
       axios
         .get(path)
         .then((res) => {
-          this.parts = res.data.parts;
+          this.parts = res.data;
         })
         .catch((error) => {
           console.error(error);

@@ -1,48 +1,49 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, request
+from sqlalchemy.exc import NoResultFound
 
 from carservice import db
-from carservice.models import parts
+from carservice.models import Part, PartSchema
 
 parts_bp = Blueprint('parts_bp', __name__)
 
+part_schema = PartSchema()
+parts_schema = PartSchema(many=True)
+
 
 @parts_bp.route('/parts', methods=['GET', 'POST'])
-def all_parts():
-    response_object = {'status': 'success'}
+def list_create_part():
 
     if request.method == 'GET':
-        all_parts = parts.query.all()
-        parts_list = []
-        for part in all_parts:
-            part_dict = part.as_dict()
-            parts_list.append(part_dict)
-        response_object['parts'] = parts_list
-        print(response_object)
+        all_parts = Part.query.all()
+        return parts_schema.dump(all_parts)
 
     if request.method == 'POST':
         post_data = request.get_json()
-        new_part = parts(name=post_data.get('name'), description=post_data.get(
-            'description'), price=post_data.get('price'))
+        if not post_data:
+            return {"message": "No input data provided"}, 400
+        new_part = part_schema.load(post_data)
         db.session.add(new_part)
         db.session.commit()
-        response_object['message'] = 'Nowa część została dodana!'
-
-    return jsonify(response_object)
+        return {"message": "New part has been added!"}, 200
 
 
-@parts_bp.route('/parts/<part_id>', methods=['PUT', 'DELETE'])
-def single_part(part_id):
-    response_object = {'status': 'success'}
+@parts_bp.route('/parts/<part_id>', methods=['GET', 'PUT', 'DELETE'])
+def retrieve_update_destroy_part(part_id):
+
+    if request.method == 'GET':
+        try:
+            part = Part.query.filter(Part.id == part_id).one()
+        except NoResultFound:
+            return {"message": "Part could not be found."}, 400
+        return part_schema.dump(part)
 
     if request.method == 'PUT':
         post_data = request.get_json()
-        db.session.query(parts).filter(parts.id == part_id).update(post_data)
+        db.session.query(Part).filter(Part.id == part_id).update(post_data)
         db.session.commit()
-        response_object['message'] = 'Dane części zostały zaktualizowane!'
+        return {"message": "Part was successfully updated"}, 200
 
     if request.method == 'DELETE':
-        db.session.query(parts).filter(parts.id == part_id).delete()
+        db.session.query(Part).filter(Part.id == part_id).delete()
         db.session.commit()
-        response_object['message'] = 'Część została usunięta!'
-
-    return jsonify(response_object)
+        return {"message": "Part was successfully deleted"}, 200
