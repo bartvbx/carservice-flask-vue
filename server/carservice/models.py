@@ -1,4 +1,4 @@
-from main import db
+from carservice import db
 
 part_identifier = db.Table('part_identifier',
                            db.Column('service_id', db.Integer,
