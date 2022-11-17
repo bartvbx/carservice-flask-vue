@@ -23,7 +23,9 @@
                 <th scope="col">Nazwa</th>
                 <th scope="col">Opis</th>
                 <th scope="col">Części</th>
-                <th scope="col">Cena</th>
+                <th scope="col">Parts price</th>
+                <th scope="col">Labour price</th>
+                <th scope="col">Total price</th>
                 <th scope="col">Akcje</th>
               </tr>
             </thead>
@@ -44,7 +46,9 @@
                     </span>
                   </text>
                 </td>
+                <td>{{ service.parts_price }}</td>
                 <td>{{ service.labour_price }}</td>
+                <td>{{ service.total_price }}</td>
                 <td>
                   <div class="btn-group" role="group">
                     <button

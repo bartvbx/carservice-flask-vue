@@ -1,5 +1,4 @@
-from queue import Empty
-from marshmallow import post_load, pre_load
+from marshmallow import post_load
 
 from carservice import db
 from carservice import ma
@@ -41,6 +40,12 @@ class Service(db.Model):
     description = db.Column(db.String(128))
     labour_price = db.Column(db.Float)
     parts = db.relationship("Part", secondary=service_part)
+
+    def parts_price(self):
+        return sum(part.price for part in self.parts)
+    
+    def total_price(self):
+        return self.parts_price() + self.labour_price
 
 
 class Client(db.Model):
@@ -89,11 +94,19 @@ class ClientSchema(ma.SQLAlchemyAutoSchema):
 
 class ServiceSchema(ma.SQLAlchemyAutoSchema):
     parts = ma.Nested(PartSchema, many=True)
+    parts_price = ma.Method('get_parts_price')
+    total_price = ma.Method('get_total_price')
 
     class Meta:
         model = Service
         include_relationships = True
         include_fk = True
+
+    def get_parts_price(self, obj):
+        return obj.parts_price()
+
+    def get_total_price(self, obj):
+        return obj.total_price()
 
     @post_load
     def make_service(self, data, **kwargs):
