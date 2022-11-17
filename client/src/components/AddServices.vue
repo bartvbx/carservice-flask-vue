@@ -50,7 +50,7 @@
         label-for="form-service-parts-input"
       >
         <VueMultiselect
-          v-model="addServiceForm.service_parts"
+          v-model="addServiceForm.parts"
           :options="parts"
           :multiple="true"
           label="name"
@@ -71,7 +71,7 @@
         <b-form-input
           id="form-price-input"
           type="number"
-          v-model="addServiceForm.price"
+          v-model="addServiceForm.labour_price"
           min="0"
           required
           placeholder="Wprowadź cenę usługi"
@@ -96,8 +96,8 @@ export default {
       addServiceForm: {
         name: "",
         description: "",
-        service_parts: [],
-        price: "",
+        parts: [],
+        labour_price: 0,
       },
       message: "",
       modalShow: false,
@@ -107,8 +107,8 @@ export default {
     initForm() {
       this.addServiceForm.name = "";
       this.addServiceForm.description = "";
-      this.addServiceForm.service_parts = [];
-      this.addServiceForm.price = "";
+      this.addServiceForm.parts = [];
+      this.addServiceForm.price = 0;
     },
 
     getParts() {
@@ -116,7 +116,7 @@ export default {
       axios
         .get(path)
         .then((res) => {
-          this.parts = res.data.parts;
+          this.parts = res.data;
         })
         .catch((error) => {
           console.error(error);
@@ -141,8 +141,8 @@ export default {
       const payload = {
         name: this.addServiceForm.name,
         description: this.addServiceForm.description,
-        service_parts: this.addServiceForm.service_parts,
-        price: this.addServiceForm.price,
+        parts: this.addServiceForm.parts,
+        labour_price: this.addServiceForm.labour_price,
       };
       this.addService(payload);
       this.initForm();

@@ -33,18 +33,18 @@
                 <td>{{ service.description }}</td>
                 <td>
                   <text
-                    v-for="(service_parts, index) in service.service_parts"
+                    v-for="(service_parts, index) in service.parts"
                     :key="index"
                     >{{ service_parts.name }}
                     <span
                       v-if="
-                        index != Object.keys(service.service_parts).length - 1
+                        index != Object.keys(service.parts).length - 1
                       "
                       >,
                     </span>
                   </text>
                 </td>
-                <td>{{ service.price }}</td>
+                <td>{{ service.labour_price }}</td>
                 <td>
                   <div class="btn-group" role="group">
                     <button
@@ -116,7 +116,7 @@
             label-for="form-service-parts-edit-input"
           >
             <VueMultiselect
-              v-model="editForm.service_parts"
+              v-model="editForm.parts"
               :options="parts"
               :multiple="true"
               label="name"
@@ -137,7 +137,7 @@
             <b-form-input
               id="form-price-edit-input"
               type="number"
-              v-model="editForm.price"
+              v-model="editForm.labour_price"
               min="0"
               required
               placeholder="Wprowadź cenę usługi"
@@ -166,8 +166,8 @@ export default {
         id: "",
         name: "",
         description: "",
-        service_parts: [],
-        price: "",
+        parts: [],
+        labour_price: 0,
       },
       message: "",
       showMessage: false,
@@ -180,7 +180,7 @@ export default {
       axios
         .get(path)
         .then((res) => {
-          this.services = res.data.services;
+          this.services = res.data;
         })
         .catch((error) => {
           console.error(error);
@@ -192,7 +192,7 @@ export default {
       axios
         .get(path)
         .then((res) => {
-          this.parts = res.data.parts;
+          this.parts = res.data;
         })
         .catch((error) => {
           console.error(error);
@@ -212,8 +212,8 @@ export default {
       this.editForm.id = "";
       this.editForm.name = "";
       this.editForm.description = "";
-      this.editForm.service_parts = [];
-      this.editForm.price = "";
+      this.editForm.parts = [];
+      this.editForm.labour_price = 0;
     },
 
     updateService(payload, serviceID) {
@@ -243,8 +243,8 @@ export default {
       const payload = {
         name: this.editForm.name,
         description: this.editForm.description,
-        service_parts: this.editForm.service_parts,
-        price: this.editForm.price,
+        parts: this.editForm.parts,
+        labour_price: this.editForm.labour_price,
       };
       this.updateService(payload, this.editForm.id);
       this.modalShow = !this.modalShow;

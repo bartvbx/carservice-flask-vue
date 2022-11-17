@@ -1,14 +1,16 @@
-from marshmallow import post_load
+from queue import Empty
+from marshmallow import post_load, pre_load
 
 from carservice import db
 from carservice import ma
 
-# part_identifier = db.Table('part_identifier',
-#                            db.Column('service_id', db.Integer,
-#                                      db.ForeignKey('services.id')),
-#                            db.Column('part_id', db.Integer,
-#                                      db.ForeignKey('parts.id'))
-#                            )
+
+service_part = db.Table('service_part',
+    db.Column('id', db.Integer, primary_key=True),
+    db.Column('service_id', db.Integer, db.ForeignKey('service.id')),
+    db.Column('part_id', db.Integer, db.ForeignKey('part.id'))
+    )
+
 
 # service_identifier = db.Table('service_identifier',
 #                               db.Column('visit_id', db.Integer,
@@ -22,44 +24,32 @@ from carservice import ma
 #                                        db.ForeignKey('clients.id')),
 #                              db.Column('service_id', db.Integer,
 #                                        db.ForeignKey('services.id'))
-#                              
+#  
 
 class Part(db.Model):
+    __tablename__ = 'part'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     description = db.Column(db.String(128))
     price = db.Column(db.Float)
 
-    def __init__(self, name, description, price):
-            self.name = name
-            self.description = description
-            self.price = price
 
-
-# class services(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(64))
-#     description = db.Column(db.String(128))
-#     price = db.Column(db.Float)
-#     parts = db.relationship("parts",
-#                             secondary=part_identifier)
-
-#     def as_dict(self):
-#         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+class Service(db.Model):
+    __tablename__ = 'service'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    description = db.Column(db.String(128))
+    labour_price = db.Column(db.Float)
+    parts = db.relationship("Part", secondary=service_part)
 
 
 class Client(db.Model):
+    __tablename__ = 'client'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     car_brand = db.Column(db.String(64))
     car_model = db.Column(db.String(64))
     contact = db.Column(db.String(64))
-
-    def __init__(self, name, car_brand, car_model, contact):
-            self.name = name
-            self.car_brand = car_brand
-            self.car_model = car_model
-            self.contact = contact
 
 
 # class visits(db.Model):
@@ -82,7 +72,10 @@ class PartSchema(ma.SQLAlchemyAutoSchema):
 
     @post_load
     def make_part(self, data, **kwargs):
-        return Part(**data)
+        if 'id' in data:
+            return db.session.query(Part).filter(Part.id == data['id']).one()
+        else:
+            return Part(**data)
 
 
 class ClientSchema(ma.SQLAlchemyAutoSchema):
@@ -92,3 +85,19 @@ class ClientSchema(ma.SQLAlchemyAutoSchema):
     @post_load
     def make_client(self, data, **kwargs):
         return Client(**data)
+
+
+class ServiceSchema(ma.SQLAlchemyAutoSchema):
+    parts = ma.Nested(PartSchema, many=True)
+
+    class Meta:
+        model = Service
+        include_relationships = True
+        include_fk = True
+
+    @post_load
+    def make_service(self, data, **kwargs):
+        if 'id' in data:
+            return db.session.query(Service).filter(Service.id == data['id']).one()
+        else:
+            return Service(**data)
