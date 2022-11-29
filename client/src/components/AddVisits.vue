@@ -32,7 +32,8 @@
           required
         >
         </VueMultiselect>
-        lub dodaj nowego:
+        or
+        <br />
         <add-clients @submit="afterAddingClient"></add-clients>
       </b-form-group>
 
@@ -42,7 +43,7 @@
         label-for="form-visit-services-input"
       >
         <VueMultiselect
-          v-model="addVisitForm.visit_services"
+          v-model="addVisitForm.services"
           :options="services"
           :multiple="true"
           label="name"
@@ -119,7 +120,7 @@ export default {
         state: "",
         date: "",
         description: "",
-        visit_services: [],
+        services: [],
         client: [],
         discount: 0,
       },
@@ -132,7 +133,7 @@ export default {
       this.addVisitForm.state = "";
       this.addVisitForm.date = "";
       this.addVisitForm.description = "";
-      this.addVisitForm.visit_services = [];
+      this.addVisitForm.services = [];
       this.addVisitForm.client = [];
       this.addVisitForm.discount = 0;
     },
@@ -142,7 +143,7 @@ export default {
       axios
         .get(path)
         .then((res) => {
-          this.services = res.data.services;
+          this.services = res.data;
         })
         .catch((error) => {
           console.error(error);
@@ -154,7 +155,7 @@ export default {
       axios
         .get(path)
         .then((res) => {
-          this.clients = res.data.clients;
+          this.clients = res.data;
         })
         .catch((error) => {
           console.error(error);
@@ -197,7 +198,7 @@ export default {
         name: this.addVisitForm.name,
         date: this.addVisitForm.date,
         description: this.addVisitForm.description,
-        visit_services: this.addVisitForm.visit_services,
+        services: this.addVisitForm.services,
         client: this.addVisitForm.client,
         discount: this.addVisitForm.discount,
       };

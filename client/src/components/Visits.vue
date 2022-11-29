@@ -20,7 +20,7 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th scope="col">Realizacja</th>
+                <th scope="col">State</th>
                 <th scope="col">Termin</th>
                 <th scope="col">Usługi</th>
                 <th scope="col">Klient</th>
@@ -33,36 +33,35 @@
             </thead>
             <tbody>
               <tr v-for="(visit, index) in visits" :key="index">
-                <!-- <td>{{ visit.state }}</td> -->
                 <td>
                   <b-form-checkbox
                     id="state-checkbox"
                     v-model="visit.state"
                     name="state-checkbox"
                     @change="changeVisitState(visit)"
-                  >
+                  > 
                   </b-form-checkbox>
                 </td>
-                <td>{{ visit.date }}</td>
+                <td>{{ formatDate(visit.date) }}</td>
                 <td>
                   <text
-                    v-for="(visit_services, index) in visit.visit_services"
+                    v-for="(visit_services, index) in visit.services"
                     :key="index"
                     >{{ visit_services.name }}
                     <span
                       v-if="
-                        index != Object.keys(visit.visit_services).length - 1
+                        index != Object.keys(visit.services).length - 1
                       "
                       >,
                     </span>
                   </text>
                 </td>
-                <td>{{ visit.client.name }}</td>
+                <td>{{ visit.client[0].name }}</td>
                 <td>
-                  {{ visit.client.car_brand }} {{ visit.client.car_model }}
+                  {{ visit.client[0].car_brand }} {{ visit.client[0].car_model }}
                 </td>
-                <td>{{ visit.client.contact }}</td>
-                <td>{{ visit.price }}</td>
+                <td>{{ visit.client[0].contact }}</td>
+                <td>{{ visit.final_price }}</td>
                 <td>{{ visit.description }}</td>
                 <td>
                   <div class="btn-group" role="group">
@@ -117,7 +116,9 @@
               required
             >
             </VueMultiselect>
-            lub dodaj nowego: <add-clients @submit="afterAddingClient"></add-clients>
+            or
+            <br />
+            <add-clients @submit="afterAddingClient"></add-clients>
           </b-form-group>
 
           <b-form-group
@@ -126,7 +127,7 @@
             label-for="form-visit-services-edit-input"
           >
             <VueMultiselect
-              v-model="editForm.visit_services"
+              v-model="editForm.services"
               :options="services"
               :multiple="true"
               label="name"
@@ -146,6 +147,7 @@
           >
             <Datepicker
               v-model="editForm.date"
+              format="yyyy-MM-dd HH:mm:ss"
               required
               placeholder="Wprowadź datę"
             ></Datepicker>
@@ -191,6 +193,7 @@
 
 <script>
 import axios from "axios";
+import { formatISO9075 } from 'date-fns';
 import VueMultiselect from "vue-multiselect";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
@@ -208,8 +211,8 @@ export default {
         state: "",
         date: "",
         description: "",
-        visit_services: [],
-        client: [],
+        services: [],
+        client: "",
         discount: 0,
       },
       message: "",
@@ -223,7 +226,7 @@ export default {
       axios
         .get(path)
         .then((res) => {
-          this.visits = res.data.visits;
+          this.visits = res.data;
         })
         .catch((error) => {
           console.error(error);
@@ -235,7 +238,7 @@ export default {
       axios
         .get(path)
         .then((res) => {
-          this.services = res.data.services;
+          this.services = res.data;
         })
         .catch((error) => {
           console.error(error);
@@ -247,11 +250,15 @@ export default {
       axios
         .get(path)
         .then((res) => {
-          this.clients = res.data.clients;
+          this.clients = res.data;
         })
         .catch((error) => {
           console.error(error);
         });
+    },
+
+    formatDate(dateString) {
+      return formatISO9075(new Date(dateString));
     },
 
     afterAddingClient() {
@@ -272,8 +279,8 @@ export default {
       this.editForm.state = "";
       this.editForm.date = "";
       this.editForm.description = "";
-      this.editForm.visit_services = [];
-      this.editForm.client = [];
+      this.editForm.services = [];
+      this.editForm.client = "";
       this.editForm.discount = 0;
     },
 
@@ -325,9 +332,9 @@ export default {
       e.preventDefault();
       const payload = {
         name: this.editForm.name,
-        date: this.editForm.date,
+        date: formatISO9075(new Date(this.editForm.date)),
         description: this.editForm.description,
-        visit_services: this.editForm.visit_services,
+        services: this.editForm.services,
         client: this.editForm.client,
         discount: this.editForm.discount,
       };

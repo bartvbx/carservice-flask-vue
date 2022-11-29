@@ -1,127 +1,88 @@
 from datetime import datetime
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, request
+from sqlalchemy.exc import NoResultFound
 
 from carservice import db
-from carservice.models import services, clients, visits
+from carservice.models import Client, Service, Visit, VisitSchema
 
 visits_bp = Blueprint('visits_bp', __name__)
+
+visit_schema = VisitSchema()
+visits_schema = VisitSchema(many=True)
 
 
 @visits_bp.route('/visits', methods=['GET', 'POST'])
 def all_visits():
-    response_object = {'status': 'success'}
 
     if request.method == 'GET':
-        all_visits = visits.query.all()
-        visits_list = []
-
-        for visit in all_visits:
-            visit_dict = visit.as_dict()
-            services_list = []
-
-            for service in visit.services:
-                services_list.append(service.as_dict())
-
-            visit_dict['visit_services'] = services_list
-            client_id = visit_dict['client']
-            client = db.session.query(clients).filter(
-                clients.id == client_id).one()
-            visit_dict['client'] = client.as_dict()
-
-            visits_list.append(visit_dict)
-
-        response_object['visits'] = visits_list
+        all_services = Visit.query.all()
+        return visits_schema.dump(all_services)
 
     if request.method == 'POST':
-
         post_data = request.get_json()
-        print(post_data)
-        post_data_date = datetime.strptime(
-            post_data.get('date'), '%Y-%m-%dT%H:%M:00.000Z')
-        post_data_client = post_data.get('client')['id']
+        if not post_data:
+            return {"message": "No input data provided"}, 400
 
-        new_visit = visits(date=post_data_date, description=post_data.get(
-            'description'), client=post_data_client, price=0, discount=post_data.get('discount'), state=False)
-        new_visit.services = []
+        client = post_data.pop('client')
+        querried_client = db.session.query(Client).filter(Client.id == client.get('id')).one()
+
+        new_visit = visit_schema.load(post_data)
+        new_visit.client.append(querried_client)
         db.session.add(new_visit)
-        db.session.flush()
-        print(new_visit.services)
-        print(post_data['visit_services'])
-        sum_price = 0
-        for service in post_data['visit_services']:
-            sum_price += service.get('price')
-            querried_service = db.session.query(services).filter(
-                services.id == service.get('id')).one()
-            new_visit.services.append(querried_service)
-            db.session.add(new_visit)
-        new_visit.price = sum_price * (1 - int(new_visit.discount)/100)
         db.session.commit()
-
-        response_object['message'] = 'Nowa wizyta została dodana!'
-
-    return jsonify(response_object)
+        return {"message": "New visit has been added!"}, 200
 
 
 @visits_bp.route('/visits/state/<visit_id>', methods=['PUT'])
 def change_visit_state(visit_id):
-    response_object = {'status': 'success'}
-    visit = db.session.query(visits).filter(visits.id == visit_id).one()
+    visit = db.session.query(Visit).filter(Visit.id == visit_id).one()
     if visit.state == False:
         visit.state = True
-        response_object['message'] = 'Wizyta została zrealizowana!'
+        message = 'The visit has been completed!'
     else:
         visit.state = False
-        response_object['message'] = 'Wizyta nie została jeszcze zrealizowana!'
+        message = 'The visit hasn\'t been completed!'
     db.session.commit()
+    return {"message": message}, 200
 
-    return jsonify(response_object)
 
-
-@visits_bp.route('/visits/<visit_id>', methods=['PUT', 'DELETE'])
+@visits_bp.route('/visits/<visit_id>', methods=['GET', 'PUT', 'DELETE'])
 def single_visit(visit_id):
-    response_object = {'status': 'success'}
+
+    try:
+        visit = Visit.query.filter(Visit.id == visit_id).one()
+    except NoResultFound:
+        return {"message": "Visit could not be found."}, 400
+
+    if request.method == 'GET':
+        return visit_schema.dump(visit)
 
     if request.method == 'PUT':
         post_data = request.get_json()
-        print('post_data')
-        print(post_data)
-        print('---------')
-        # post_data['date'] = datetime.strptime(
-        # post_data.get('date'), '%Y-%m-%dT%H:%M:00.000Z')
-        services_list = post_data.pop('visit_services')
-        client_data = post_data.pop('client')
-        date_data = post_data.pop('date')
-        print('working_post_data')
-        print(post_data)
-        selected_visit = db.session.query(
-            visits).filter(visits.id == visit_id).one()
-        db.session.query(visits).filter(visits.id == visit_id).update(
-            post_data)  # not sure about this one
-        db.session.query(visits).filter(visits.id == visit_id).update(
-            {'client': client_data['id']})
-        selected_visit.services.clear()
-        db.session.flush()
-        sum_price = 0
-        for service in services_list:
-            sum_price += service.get('price')
-            querried_service = db.session.query(services).filter(
-                services.id == service.get('id')).one()
-            selected_visit.services.append(querried_service)
-            db.session.add(selected_visit)
+        
+        # Handle date, client and services
+        post_data['date'] = datetime.strptime(post_data.get('date'), '%Y-%m-%d %H:%M:%S')
+        client = post_data.pop('client')
+        if isinstance(client, list):
+            querried_client = db.session.query(Client).filter(Client.id == client[0].get('id')).one()
+        else:
+            querried_client = db.session.query(Client).filter(Client.id == client.get('id')).one()
+        services_list = post_data.pop('services')
+        visit.client.clear()
+        visit.services.clear()
 
-        print(selected_visit.price)
-        print(sum_price)
-        print(selected_visit.discount)
-        db.session.query(visits).filter(visits.id == visit_id).update(
-            {'price': sum_price * (1 - int(selected_visit.discount)/100)})
-        # selected_visit.price = sum_price * (1 - int(selected_visit.discount)/100)
+        # Update
+        db.session.query(Visit).filter(Visit.id == visit_id).update(post_data)
+        visit.client.append(querried_client)
+        for service in services_list:
+            querried_service = db.session.query(Service).filter(Service.id == service.get('id')).one()
+            visit.services.append(querried_service)
+        db.session.add(visit)
         db.session.commit()
-        response_object['message'] = 'Dane wizyty zostały zaktualizowane!'
+        return {"message": "Visit was successfully updated"}, 200
 
     if request.method == 'DELETE':
-        db.session.query(visits).filter(visits.id == visit_id).delete()
+        db.session.query(Visit).filter(Visit.id == visit_id).delete()
         db.session.commit()
-        response_object['message'] = 'Wizyta została usunięta!'
-
-    return jsonify(response_object)
+        return {"message": "Visit was successfully deleted"}, 200
