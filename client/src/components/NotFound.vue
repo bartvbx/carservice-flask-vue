@@ -1,15 +1,14 @@
 <template>
   <br />
   <br />
-  <h1>Błąd 404</h1>
-  <h3>Nie znaleziono strony</h3>
+  <h1>Error 404</h1>
+  <h3>Page not found</h3>
   <p>
-    Niestety strona o tym adresie nie istnieje.
+    Unfortunately, this page does not exist.
     <br />
-    Skorzystaj z nawigacji lub użyj przycisku poniżej, aby powrócić na stronę
-    główną.
+    Use the navigation or the button below to return to the home page.
   </p>
   <router-link :to="{ name: 'Home' }" class="btn btn-secondary"
-    >Strona główna</router-link
+    >Home page</router-link
   >
 </template>

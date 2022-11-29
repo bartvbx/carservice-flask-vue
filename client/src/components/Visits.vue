@@ -5,7 +5,7 @@
         <div class="col-sm-12">
           <br />
           <hr />
-          <p>Lista wizyt</p>
+          <p>Visit list</p>
           <hr />
           <br />
 
@@ -21,14 +21,14 @@
             <thead>
               <tr>
                 <th scope="col">State</th>
-                <th scope="col">Termin</th>
-                <th scope="col">Usługi</th>
-                <th scope="col">Klient</th>
-                <th scope="col">Samochód</th>
-                <th scope="col">Kontakt</th>
-                <th scope="col">Cena</th>
-                <th scope="col">Dodatkowe informacje</th>
-                <th scope="col">Akcje</th>
+                <th scope="col">Date</th>
+                <th scope="col">Services</th>
+                <th scope="col">Client</th>
+                <th scope="col">Car</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Price</th>
+                <th scope="col">Additional information</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -74,14 +74,14 @@
                         modalShow = !modalShow;
                       "
                     >
-                      Aktualizuj
+                      Update
                     </button>
                     <button
                       type="button"
                       class="btn btn-danger btn-sm"
                       @click="deleteVisit(visit)"
                     >
-                      Usuń
+                      Delete
                     </button>
                   </div>
                 </td>
@@ -95,13 +95,13 @@
         v-model="modalShow"
         ref="editVisitModal"
         id="visit-update-modal"
-        title="Aktualizuj wizytę"
+        title="Update visit"
         hide-footer
       >
         <b-form @submit="onSubmitUpdate" class="w-100">
           <b-form-group
             id="form-client-edit-group"
-            label="Klient:"
+            label="Client:"
             label-for="form-client-edit-input"
           >
             <VueMultiselect
@@ -109,10 +109,10 @@
               :options="clients"
               label="name"
               track-by="name"
-              placeholder="Wybierz klienta"
-              selectLabel="Wciśnij enter, aby zaznaczyć"
-              selectedLabel="Wybrane"
-              deselectLabel="Wciśnij enter, aby odznaczyć"
+              placeholder="Select client"
+              selectLabel="Press enter to select"
+              selectedLabel="Selected"
+              deselectLabel="Press enter to deselect"
               required
             >
             </VueMultiselect>
@@ -123,7 +123,7 @@
 
           <b-form-group
             id="form-visit-services-edit-group"
-            label="Usługi:"
+            label="Services:"
             label-for="form-visit-services-edit-input"
           >
             <VueMultiselect
@@ -132,44 +132,44 @@
               :multiple="true"
               label="name"
               track-by="name"
-              placeholder="Wybierz usługi"
-              selectLabel="Wciśnij enter, aby zaznaczyć"
-              selectedLabel="Wybrane"
-              deselectLabel="Wciśnij enter, aby odznaczyć"
+              placeholder="Select services"
+              selectLabel="Press enter to select"
+              selectedLabel="Selected"
+              deselectLabel="Press enter to deselect"
             >
             </VueMultiselect>
           </b-form-group>
 
           <b-form-group
             id="form-date-edit-group"
-            label="Termin:"
+            label="Date:"
             label-for="form-date-edit-input"
           >
             <Datepicker
               v-model="editForm.date"
               format="yyyy-MM-dd HH:mm:ss"
               required
-              placeholder="Wprowadź datę"
+              placeholder="Enter the date"
             ></Datepicker>
           </b-form-group>
 
           <b-form-group
             id="form-description-edit-group"
-            label="Dodatkowe informacje:"
+            label="Additional information:"
             label-for="form-description-edit-input"
           >
             <b-form-input
               id="form-description-edit-input"
               type="text"
               v-model="editForm.description"
-              placeholder="Wprowadź dodatkowe informacje"
+              placeholder="Enter additional information"
             >
             </b-form-input>
           </b-form-group>
 
           <b-form-group
             id="form-discount-edit-group"
-            label="Zniżka:"
+            label="Discount:"
             label-for="form-discount-edit-input"
           >
             <b-form-input
@@ -179,12 +179,12 @@
               max="100"
               v-model="editForm.discount"
               required
-              placeholder="Wprowadź zniżkę"
+              placeholder="Enter the discount value (%)"
             >
             </b-form-input>
           </b-form-group>
 
-          <b-button type="submit" variant="outline-info">Aktualizuj</b-button>
+          <b-button type="submit" variant="outline-info">Update</b-button>
         </b-form>
       </b-modal>
     </div>

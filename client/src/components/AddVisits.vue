@@ -5,19 +5,19 @@
     @click="modalShow = !modalShow"
     id="visit-modal"
   >
-    Dodaj nową wizytę
+    Add a new visit
   </button>
   <b-modal
     v-model="modalShow"
     ref="addVisitModal"
     id="visit-modal"
-    title="Dodaj nową wizytę"
+    title="Add a new visit"
     hide-footer
   >
     <b-form @submit="onSubmit" @reset="onReset" class="w-100">
       <b-form-group
         id="form-client-group"
-        label="Klient:"
+        label="Client:"
         label-for="form-client-input"
       >
         <VueMultiselect
@@ -25,10 +25,10 @@
           :options="clients"
           label="name"
           track-by="name"
-          placeholder="Wybierz klienta"
-          selectLabel="Wciśnij enter, aby zaznaczyć"
-          selectedLabel="Wybrane"
-          deselectLabel="Wciśnij enter, aby odznaczyć"
+          placeholder="Select client"
+          selectLabel="Press enter to select"
+          selectedLabel="Selected"
+          deselectLabel="Press enter to deselect"
           required
         >
         </VueMultiselect>
@@ -39,7 +39,7 @@
 
       <b-form-group
         id="form-visit-services-group"
-        label="Usługi:"
+        label="Services:"
         label-for="form-visit-services-input"
       >
         <VueMultiselect
@@ -48,43 +48,43 @@
           :multiple="true"
           label="name"
           track-by="name"
-          placeholder="Wybierz usługi"
-          selectLabel="Wciśnij enter, aby zaznaczyć"
-          selectedLabel="Wybrane"
-          deselectLabel="Wciśnij enter, aby odznaczyć"
+          placeholder="Select services"
+          selectLabel="Press enter to select"
+          selectedLabel="Selected"
+          deselectLabel="Press enter to deselect"
         >
         </VueMultiselect>
       </b-form-group>
 
       <b-form-group
         id="form-date-group"
-        label="Termin:"
+        label="Date:"
         label-for="form-date-input"
       >
         <Datepicker
           v-model="addVisitForm.date"
           required
-          placeholder="Wprowadź datę"
+          placeholder="Enter the date"
         ></Datepicker>
       </b-form-group>
 
       <b-form-group
         id="form-description-group"
-        label="Dodatkowe informacje:"
+        label="Additional information:"
         label-for="form-description-input"
       >
         <b-form-input
           id="form-description-input"
           type="text"
           v-model="addVisitForm.description"
-          placeholder="Wprowadź dodatkowe informacje"
+          placeholder="Enter additional information"
         >
         </b-form-input>
       </b-form-group>
 
       <b-form-group
         id="form-discount-group"
-        label="Zniżka:"
+        label="Discount:"
         label-for="form-discount-input"
       >
         <b-form-input
@@ -93,13 +93,13 @@
           min="0"
           max="100"
           v-model="addVisitForm.discount"
-          placeholder="Wprowadź zniżkę"
+          placeholder="Enter the discount value (%)"
         >
         </b-form-input>
       </b-form-group>
 
-      <b-button type="submit" variant="outline-info">Dodaj</b-button>
-      <b-button type="reset" variant="outline-danger">Wyczyść</b-button>
+      <b-button type="submit" variant="outline-info">Add</b-button>
+      <b-button type="reset" variant="outline-danger">Clear</b-button>
     </b-form>
   </b-modal>
 </template>

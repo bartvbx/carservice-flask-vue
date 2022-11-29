@@ -7,26 +7,26 @@
     <b-row>
       <b-col
         ><div>
-          <b-card title="Części" style="max-width: 40rem" class="mb-2">
+          <b-card title="Parts" style="max-width: 40rem" class="mb-2">
             <b-card-text>
-              Wyświetl, dodaj, aktualizuj i usuwaj części.
+              View, add, update and delete parts.
             </b-card-text>
 
             <router-link :to="{ name: 'Parts' }" class="btn btn-success"
-              >Części</router-link
+              >Parts</router-link
             >
           </b-card>
         </div></b-col
       >
       <b-col
         ><div>
-          <b-card title="Usługi" style="max-width: 40rem" class="mb-2">
+          <b-card title="Services" style="max-width: 40rem" class="mb-2">
             <b-card-text>
-              Wyświetl, dodaj, aktualizuj i usuwaj usługi.
+              View, add, update and delete services.
             </b-card-text>
 
             <router-link :to="{ name: 'Services' }" class="btn btn-success"
-              >Usługi</router-link
+              >Services</router-link
             >
           </b-card>
         </div></b-col
@@ -34,26 +34,26 @@
       <div class="w-100"><br /></div>
       <b-col
         ><div>
-          <b-card title="Klienci" style="max-width: 40rem" class="mb-2">
+          <b-card title="Clients" style="max-width: 40rem" class="mb-2">
             <b-card-text>
-              Wyświetl, dodaj, aktualizuj i usuwaj klienów.
+              View, add, update and delete clients.
             </b-card-text>
 
             <router-link :to="{ name: 'Clients' }" class="btn btn-success"
-              >Klienci</router-link
+              >Clients</router-link
             >
           </b-card>
         </div></b-col
       >
       <b-col
         ><div>
-          <b-card title="Wizyty" style="max-width: 40rem" class="mb-2">
+          <b-card title="Visits" style="max-width: 40rem" class="mb-2">
             <b-card-text>
-              Wyświetl, dodaj, aktualizuj i usuwaj wizyty.
+              View, add, update and delete visits.
             </b-card-text>
 
             <router-link :to="{ name: 'Visits' }" class="btn btn-success"
-              >Wizyty</router-link
+              >Visits</router-link
             >
           </b-card>
         </div></b-col

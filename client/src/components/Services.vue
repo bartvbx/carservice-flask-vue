@@ -5,7 +5,7 @@
         <div class="col-sm-12">
           <br />
           <hr />
-          <p>Lista usług</p>
+          <p>Service list</p>
           <hr />
           <br />
 
@@ -20,13 +20,13 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th scope="col">Nazwa</th>
-                <th scope="col">Opis</th>
-                <th scope="col">Części</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Parts</th>
                 <th scope="col">Parts price</th>
                 <th scope="col">Labour price</th>
                 <th scope="col">Total price</th>
-                <th scope="col">Akcje</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -60,14 +60,14 @@
                         modalShow = !modalShow;
                       "
                     >
-                      Aktualizuj
+                      Update
                     </button>
                     <button
                       type="button"
                       class="btn btn-danger btn-sm"
                       @click="deleteService(service)"
                     >
-                      Usuń
+                      Delete
                     </button>
                   </div>
                 </td>
@@ -81,13 +81,13 @@
         v-model="modalShow"
         ref="editServiceModal"
         id="service-update-modal"
-        title="Aktualizuj usługę"
+        title="Update service"
         hide-footer
       >
         <b-form @submit="onSubmitUpdate" class="w-100">
           <b-form-group
             id="form-name-edit-group"
-            label="Nazwa:"
+            label="Name:"
             label-for="form-name-edit-input"
           >
             <b-form-input
@@ -95,28 +95,28 @@
               type="text"
               v-model="editForm.name"
               required
-              placeholder="Wprowadź nazwę usługi"
+              placeholder="Enter the service name"
             >
             </b-form-input>
           </b-form-group>
 
           <b-form-group
             id="form-description-edit-group"
-            label="Opis:"
+            label="Description:"
             label-for="form-description-edit-input"
           >
             <b-form-input
               id="form-description-edit-input"
               type="text"
               v-model="editForm.description"
-              placeholder="Wprowadź opis usługi"
+              placeholder="Enter a description of the service"
             >
             </b-form-input>
           </b-form-group>
 
           <b-form-group
             id="form-service-parts-edit-group"
-            label="Części:"
+            label="Parts:"
             label-for="form-service-parts-edit-input"
           >
             <VueMultiselect
@@ -125,17 +125,17 @@
               :multiple="true"
               label="name"
               track-by="name"
-              placeholder="Wybierz części"
-              selectLabel="Wciśnij enter, aby zaznaczyć"
-              selectedLabel="Wybrane"
-              deselectLabel="Wciśnij enter, aby odznaczyć"
+              placeholder="Select parts"
+              selectLabel="Press enter to select"
+              selectedLabel="Selected"
+              deselectLabel="Press enter to deselect"
             >
             </VueMultiselect>
           </b-form-group>
 
           <b-form-group
             id="form-price-edit-group"
-            label="Cena:"
+            label="Labour price:"
             label-for="form-price-edit-input"
           >
             <b-form-input
@@ -144,12 +144,12 @@
               v-model="editForm.labour_price"
               min="0"
               required
-              placeholder="Wprowadź cenę usługi"
+              placeholder="Enter the price of the service"
             >
             </b-form-input>
           </b-form-group>
 
-          <b-button type="submit" variant="outline-info">Aktualizuj</b-button>
+          <b-button type="submit" variant="outline-info">Update</b-button>
         </b-form>
       </b-modal>
     </div>

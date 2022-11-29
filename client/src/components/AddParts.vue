@@ -5,19 +5,19 @@
     @click="modalShow = !modalShow"
     id="part-modal"
   >
-    Dodaj nową część
+    Add a new part
   </button>
   <b-modal
     v-model="modalShow"
     ref="addPartModal"
     id="part-modal"
-    title="Dodaj nową część"
+    title="Add a new part"
     hide-footer
   >
     <b-form @submit="onSubmit" @reset="onReset" class="w-100">
       <b-form-group
         id="form-name-group"
-        label="Nazwa:"
+        label="Name:"
         label-for="form-name-input"
       >
         <b-form-input
@@ -25,28 +25,28 @@
           type="text"
           v-model="addPartForm.name"
           required
-          placeholder="Wprowadź nazwę części"
+          placeholder="Enter the part name"
         >
         </b-form-input>
       </b-form-group>
 
       <b-form-group
         id="form-description-group"
-        label="Opis:"
+        label="Description:"
         label-for="form-description-input"
       >
         <b-form-input
           id="form-description-input"
           type="text"
           v-model="addPartForm.description"
-          placeholder="Wprowadź opis części"
+          placeholder="Enter a description of the part"
         >
         </b-form-input>
       </b-form-group>
 
       <b-form-group
         id="form-price-group"
-        label="Cena:"
+        label="Price:"
         label-for="form-price-input"
       >
         <b-form-input
@@ -55,13 +55,13 @@
           v-model="addPartForm.price"
           min="0"
           required
-          placeholder="Wprowadź cenę części"
+          placeholder="Enter the part price"
         >
         </b-form-input>
       </b-form-group>
 
-      <b-button type="submit" variant="outline-info">Dodaj</b-button>
-      <b-button type="reset" variant="outline-danger">Wyczyść</b-button>
+      <b-button type="submit" variant="outline-info">Add</b-button>
+      <b-button type="reset" variant="outline-danger">Clear</b-button>
     </b-form>
   </b-modal>
 </template>

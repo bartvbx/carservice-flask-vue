@@ -5,7 +5,7 @@
         <div class="col-sm-12">
           <br />
           <hr />
-          <p>Lista klientów</p>
+          <p>Client list</p>
           <hr />
           <br />
 
@@ -20,11 +20,11 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th scope="col">Klient</th>
-                <th scope="col">Marka</th>
+                <th scope="col">Client</th>
+                <th scope="col">Brand</th>
                 <th scope="col">Model</th>
-                <th scope="col">Kontakt</th>
-                <th scope="col">Akcje</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -44,14 +44,14 @@
                         modalShow = !modalShow;
                       "
                     >
-                      Aktualizuj
+                      Update
                     </button>
                     <button
                       type="button"
                       class="btn btn-danger btn-sm"
                       @click="deleteClient(client)"
                     >
-                      Usuń
+                      Delete
                     </button>
                   </div>
                 </td>
@@ -65,13 +65,13 @@
         v-model="modalShow"
         ref="editClientModal"
         id="client-update-modal"
-        title="Aktualizuj dane klienta"
+        title="Update client"
         hide-footer
       >
         <b-form @submit="onSubmitUpdate" class="w-100">
           <b-form-group
             id="form-name-edit-group"
-            label="Klient:"
+            label="Client:"
             label-for="form-name-edit-input"
           >
             <b-form-input
@@ -79,14 +79,14 @@
               type="text"
               v-model="editForm.name"
               required
-              placeholder="Wprowadź nazwę klienta"
+              placeholder="Enter the customer name"
             >
             </b-form-input>
           </b-form-group>
 
           <b-form-group
             id="form-car-brand-edit-group"
-            label="Marka:"
+            label="Brand:"
             label-for="form-car-brand-edit-input"
           >
             <b-form-input
@@ -94,7 +94,7 @@
               type="text"
               v-model="editForm.car_brand"
               required
-              placeholder="Wprowadź markę samochodu"
+              placeholder="Enter the brand of the car"
             >
             </b-form-input>
           </b-form-group>
@@ -109,14 +109,14 @@
               type="text"
               v-model="editForm.car_model"
               required
-              placeholder="Wprowadź model samochodu"
+              placeholder="Enter the car model"
             >
             </b-form-input>
           </b-form-group>
 
           <b-form-group
             id="form-contact-edit-group"
-            label="Kontakt:"
+            label="Contact:"
             label-for="form-contact-edit-input"
           >
             <b-form-input
@@ -124,12 +124,12 @@
               type="text"
               v-model="editForm.contact"
               required
-              placeholder="Wprowadź dane kontaktowe"
+              placeholder="Enter contact details"
             >
             </b-form-input>
           </b-form-group>
 
-          <b-button type="submit" variant="outline-info">Aktualizuj</b-button>
+          <b-button type="submit" variant="outline-info">Update</b-button>
         </b-form>
       </b-modal>
     </div>

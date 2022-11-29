@@ -5,7 +5,7 @@
         <div class="col-sm-12">
           <br />
           <hr />
-          <p>Lista części</p>
+          <p>Part list</p>
           <hr />
           <br />
 
@@ -20,10 +20,10 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th scope="col">Nazwa</th>
-                <th scope="col">Opis</th>
-                <th scope="col">Cena</th>
-                <th scope="col">Akcje</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -42,14 +42,14 @@
                         modalShow = !modalShow;
                       "
                     >
-                      Aktualizuj
+                      Update
                     </button>
                     <button
                       type="button"
                       class="btn btn-danger btn-sm"
                       @click="deletePart(part)"
                     >
-                      Usuń
+                      Delete
                     </button>
                   </div>
                 </td>
@@ -63,13 +63,13 @@
         v-model="modalShow"
         ref="editPartModal"
         id="part-update-modal"
-        title="Aktualizuj część"
+        title="Update part"
         hide-footer
       >
         <b-form @submit="onSubmitUpdate" class="w-100">
           <b-form-group
             id="form-name-edit-group"
-            label="Nazwa:"
+            label="Name:"
             label-for="form-name-edit-input"
           >
             <b-form-input
@@ -77,28 +77,28 @@
               type="text"
               v-model="editForm.name"
               required
-              placeholder="Wprowadź nazwę części"
+              placeholder="Enter the part name"
             >
             </b-form-input>
           </b-form-group>
 
           <b-form-group
             id="form-description-edit-group"
-            label="Opis:"
+            label="Description:"
             label-for="form-description-edit-input"
           >
             <b-form-input
               id="form-description-edit-input"
               type="text"
               v-model="editForm.description"
-              placeholder="Wprowadź opis części"
+              placeholder="Enter a description of the part"
             >
             </b-form-input>
           </b-form-group>
 
           <b-form-group
             id="form-price-edit-group"
-            label="Cena:"
+            label="Price:"
             label-for="form-price-edit-input"
           >
             <b-form-input
@@ -107,12 +107,12 @@
               min="0"
               v-model="editForm.price"
               required
-              placeholder="Wprowadź cenę części"
+              placeholder="Enter the part price"
             >
             </b-form-input>
           </b-form-group>
 
-          <b-button type="submit" variant="outline-info">Aktualizuj</b-button>
+          <b-button type="submit" variant="outline-info">Update</b-button>
         </b-form>
       </b-modal>
     </div>

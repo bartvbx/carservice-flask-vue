@@ -5,19 +5,19 @@
     @click="modalShow = !modalShow"
     id="client-modal"
   >
-    Dodaj nowego klienta
+    Add a new client
   </button>
   <b-modal
     v-model="modalShow"
     ref="addClientModal"
     id="client-modal"
-    title="Dodaj nowego klienta"
+    title="Add a new client"
     hide-footer
   >
     <b-form @submit="onSubmit" @reset="onReset" class="w-100">
       <b-form-group
         id="form-name-group"
-        label="Nazwa:"
+        label="Client:"
         label-for="form-name-input"
       >
         <b-form-input
@@ -25,14 +25,14 @@
           type="text"
           v-model="addClientForm.name"
           required
-          placeholder="Wprowadź nazwę klienta"
+          placeholder="Enter the customer name"
         >
         </b-form-input>
       </b-form-group>
 
       <b-form-group
         id="form-car-brand-group"
-        label="Marka:"
+        label="Brand:"
         label-for="form-car-brand-input"
       >
         <b-form-input
@@ -40,7 +40,7 @@
           type="text"
           v-model="addClientForm.car_brand"
           required
-          placeholder="Wprowadź markę samochodu"
+          placeholder="Enter the brand of the car"
         >
         </b-form-input>
       </b-form-group>
@@ -55,14 +55,14 @@
           type="text"
           v-model="addClientForm.car_model"
           required
-          placeholder="Wprowadź model samochodu"
+          placeholder="Enter the car model"
         >
         </b-form-input>
       </b-form-group>
 
       <b-form-group
         id="form-contact-group"
-        label="Kontakt:"
+        label="Contact:"
         label-for="form-contact-input"
       >
         <b-form-input
@@ -70,13 +70,13 @@
           type="text"
           v-model="addClientForm.contact"
           required
-          placeholder="Wprowadź dane kontaktowe"
+          placeholder="Enter contact details"
         >
         </b-form-input>
       </b-form-group>
 
-      <b-button type="submit" variant="outline-info">Dodaj</b-button>
-      <b-button type="reset" variant="outline-danger">Wyczyść</b-button>
+      <b-button type="submit" variant="outline-info">Add</b-button>
+      <b-button type="reset" variant="outline-danger">Clear</b-button>
     </b-form>
   </b-modal>
 </template>

@@ -5,19 +5,19 @@
     @click="modalShow = !modalShow"
     id="service-modal"
   >
-    Dodaj nową usługę
+    Add a new service
   </button>
   <b-modal
     v-model="modalShow"
     ref="addServiceModal"
     id="service-modal"
-    title="Dodaj nową usługę"
+    title="Add a new service"
     hide-footer
   >
     <b-form @submit="onSubmit" @reset="onReset" class="w-100">
       <b-form-group
         id="form-name-group"
-        label="Nazwa:"
+        label="Name:"
         label-for="form-name-input"
       >
         <b-form-input
@@ -25,28 +25,28 @@
           type="text"
           v-model="addServiceForm.name"
           required
-          placeholder="Wprowadź nazwę usługi"
+          placeholder="Enter the service name"
         >
         </b-form-input>
       </b-form-group>
 
       <b-form-group
         id="form-description-group"
-        label="Opis:"
+        label="Description:"
         label-for="form-description-input"
       >
         <b-form-input
           id="form-description-input"
           type="text"
           v-model="addServiceForm.description"
-          placeholder="Wprowadź opis usługi"
+          placeholder="Enter a description of the service"
         >
         </b-form-input>
       </b-form-group>
 
       <b-form-group
         id="form-service-parts-group"
-        label="Usługi:"
+        label="Parts:"
         label-for="form-service-parts-input"
       >
         <VueMultiselect
@@ -55,17 +55,17 @@
           :multiple="true"
           label="name"
           track-by="name"
-          placeholder="Wybierz części"
-          selectLabel="Wciśnij enter, aby zaznaczyć"
-          selectedLabel="Wybrane"
-          deselectLabel="Wciśnij enter, aby odznaczyć"
+          placeholder="Select parts"
+          selectLabel="Press enter to select"
+          selectedLabel="Selected"
+          deselectLabel="Press enter to deselect"
         >
         </VueMultiselect>
       </b-form-group>
 
       <b-form-group
         id="form-price-group"
-        label="Cena:"
+        label="Labour price:"
         label-for="form-price-input"
       >
         <b-form-input
@@ -74,13 +74,13 @@
           v-model="addServiceForm.labour_price"
           min="0"
           required
-          placeholder="Wprowadź cenę usługi"
+          placeholder="Enter the price of the service"
         >
         </b-form-input>
       </b-form-group>
 
-      <b-button type="submit" variant="outline-info">Dodaj</b-button>
-      <b-button type="reset" variant="outline-danger">Wyczyść</b-button>
+      <b-button type="submit" variant="outline-info">Add</b-button>
+      <b-button type="reset" variant="outline-danger">Clear</b-button>
     </b-form>
   </b-modal>
 </template>

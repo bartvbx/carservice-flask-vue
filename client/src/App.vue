@@ -5,21 +5,21 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <router-link :to="{ name: 'Home' }" class="navbar-brand"
-          >Auto serwis</router-link
+          >Car Service</router-link
         >
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <router-link :to="{ name: 'Parts' }" class="nav-link active"
-              >Części</router-link
+              >Parts</router-link
             >
             <router-link :to="{ name: 'Services' }" class="nav-link active"
-              >Usługi</router-link
+              >Services</router-link
             >
             <router-link :to="{ name: 'Clients' }" class="nav-link active"
-              >Klienci</router-link
+              >Clients</router-link
             >
             <router-link :to="{ name: 'Visits' }" class="nav-link active"
-              >Wizyty</router-link
+              >Visits</router-link
             >
           </div>
         </div>
